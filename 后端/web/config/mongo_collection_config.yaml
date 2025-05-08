@@ -1,0 +1,121 @@
+collection_configs:
+  publish_file_version_management:
+    validator:
+      $jsonSchema:
+        bsonType: object
+        required: [ asset_id, task_id, is_reviewed, url_map ]
+        properties:
+          asset_id:
+            bsonType: int
+            description: asset_id must be int type
+          task_id:
+            bsonType: int
+            description: task_id must be int type
+          is_reviewed:
+            bsonType: bool
+            description: is_reviewed must be bool type
+          url_map:
+            bsonType: object
+            description: url_map must be dict type
+    index:
+      - [ "asset_id", 1 ]
+      - [ "task_id", 1 ]
+
+  file_url:
+    validator:
+      $jsonSchema:
+        bsonType: object
+        required: [ folder_name, file_name , upload_time,file_download_url, md5 ]
+        properties:
+          folder_name:
+            bsonType: string
+            description: 文件名，必须是string类型
+          file_name:
+            bsonType: string
+            description: 带uuid的文件名，必须是string类型
+          file_download_url:
+            bsonType: string
+            description: 文件的下载url，必须是string类型
+          md5:
+            bsonType: string
+            description: 文件的MD5，必须是string类型
+    index:
+      - [ "file_name", 1 ]
+
+  script_version:
+    validator:
+      $jsonSchema:
+        bsonType: object
+        required: [ url, version ]
+        properties:
+          url:
+            bsonType: string
+            description: 脚本的url，必须是string类型
+          version:
+            bsonType: objectId
+            description: 脚本的版本，和script_data的_id对应
+    index:
+      - [ "url", 1 ]
+
+  script_data:
+    validator:
+      $jsonSchema:
+        bsonType: object
+        required: [ url ,description, md5, script_content,isAlone,input,output,upload_time ]
+        properties:
+          url:
+            bsonType: string
+            description: 脚本url，必须是string类型
+          description:
+            bsonType: string
+            description: 脚本的描述，必须是string类型
+          script_content:
+            bsonType: string
+            description: 脚本内容，必须是string类型
+          md5:
+            bsonType: string
+            description: 脚本的md5，必须是string类型
+          isAlone:
+            bsonType: bool
+            description: 是否能独立运行，必须是bool类型
+          input:
+            bsonType: array
+            description: 脚本的输入参数
+          output:
+            bsonType: array
+            description: 脚本的输出参数
+    index:
+      - [ "_id", 1 ]
+
+  task_chain:
+    validator:
+      $jsonSchema:
+        bsonType: object
+        required: [ task_chain_url,task_chain ]
+        properties:
+          task_chain_url:
+            bsonType: string
+            description: 任务链的url，必须是string类型
+          task_chain:
+            bsonType: array
+            description: 任务链中的任务
+    index:
+      - [ "task_chain_url", 1 ]
+
+  task_log_info:
+    validator:
+      $jsonSchema:
+        bsonType: object
+        required: [ request_id,task_id ]
+        properties:
+          request_id:
+            bsonType: string
+            description: 每个请求一个id，必须是string类型
+          task_id:
+            bsonType: int
+            description: 任务id，必须是int类型，代表这个链上的第几个任务
+    index:
+      - [ "request_id", 1 ]
+      - [ "task_id", 1 ]
+
+

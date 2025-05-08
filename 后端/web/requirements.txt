@@ -1,0 +1,8 @@
+flask
+requests
+pymongo
+PyYAML
+wtforms
+chardet
+tzlocal
+Flask-Cors
