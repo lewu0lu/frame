@@ -14,7 +14,7 @@ CORS(app)
 app.config['SECRET_KEY'] = 'your_secret_key'  # 你可以保留这个密钥用于其他用途
 app.config['WTF_CSRF_ENABLED'] = False  # 禁用 CSRF 保护
 
-app.register_blueprint(app_orders)
+app.register_blueprint(app_orders)  
 app.register_blueprint(file_view, url_prefix='/file')
 # 注册蓝图
 app.register_blueprint(script_view, url_prefix='/script')

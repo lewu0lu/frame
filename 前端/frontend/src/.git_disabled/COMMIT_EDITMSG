@@ -1,0 +1,44 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch main
+#
+# Initial commit
+#
+# Changes to be committed:
+#	new file:   .vscode/launch.json
+#	new file:   App.vue
+#	new file:   api/chain_api.js
+#	new file:   api/config.js
+#	new file:   api/file_api.js
+#	new file:   api/package_api.js
+#	new file:   api/script_api.js
+#	new file:   assets/logo.svg
+#	new file:   components/ChainInformation.vue
+#	new file:   components/ChainUpload.vue
+#	new file:   components/FileColumns.vue
+#	new file:   components/FileDrawer.vue
+#	new file:   components/FileUpload.vue
+#	new file:   components/NameSpaceTree.vue
+#	new file:   components/PackageColumns.vue
+#	new file:   components/PackageInstall.vue
+#	new file:   components/ResultShow.vue
+#	new file:   components/RuntimeColumns.vue
+#	new file:   components/ScriptDrawer.vue
+#	new file:   components/ScriptInformation.vue
+#	new file:   components/ScriptUpload.vue
+#	new file:   content/Empty.vue
+#	new file:   content/FileManagement.vue
+#	new file:   content/ScriptManagement.vue
+#	new file:   main.js
+#	new file:   menu/FuncMenu.vue
+#	new file:   package.json
+#	new file:   panels/FileManagePanel.vue
+#	new file:   panels/PackagePanel.vue
+#	new file:   panels/RuntimePanel.vue
+#	new file:   panels/ScriptPanel.vue
+#	new file:   panels/TaskChainPanel.vue
+#	new file:   router.js
+#	new file:   utils.js
+#

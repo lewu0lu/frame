@@ -1,0 +1,390 @@
+/* Global CSS Variables */
+:root {
+  /* Primary Colors - Material Design palette */
+  --app-primary: #3370ff;
+  --app-primary-light: #5e96ff;
+  --app-primary-dark: #0052cc;
+  --app-secondary: #673ab7;
+  --app-secondary-light: #9575cd;
+  --app-secondary-dark: #512da8;
+  --app-accent: #00bcd4;
+  
+  /* Text Colors */
+  --app-text-primary: rgba(0, 0, 0, 0.87);
+  --app-text-secondary: rgba(0, 0, 0, 0.6);
+  --app-text-disabled: rgba(0, 0, 0, 0.38);
+  --app-text-on-primary: #ffffff;
+  --app-text-on-secondary: #ffffff;
+  
+  /* Background Colors */
+  --app-bg-primary: #ffffff;
+  --app-bg-secondary: #f5f5f5;
+  --app-bg-tertiary: #e0e0e0;
+  --app-bg-card: #ffffff;
+  
+  /* Border Colors */
+  --app-border-color: rgba(0, 0, 0, 0.12);
+  
+  /* Shadow - Material Design elevation */
+  --app-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --app-shadow-2: 0 3px 6px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
+  --app-shadow-3: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+  --app-shadow-4: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  --app-shadow-5: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+  
+  /* Material Design Colors */
+  --md-red: #f44336;
+  --md-pink: #e91e63;
+  --md-purple: #9c27b0;
+  --md-deep-purple: #673ab7;
+  --md-indigo: #3f51b5;
+  --md-blue: #2196f3;
+  --md-light-blue: #03a9f4;
+  --md-cyan: #00bcd4;
+  --md-teal: #009688;
+  --md-green: #4caf50;
+  --md-light-green: #8bc34a;
+  --md-lime: #cddc39;
+  --md-yellow: #ffeb3b;
+  --md-amber: #ffc107;
+  --md-orange: #ff9800;
+  --md-deep-orange: #ff5722;
+  --md-brown: #795548;
+  --md-grey: #9e9e9e;
+  --md-blue-grey: #607d8b;
+  
+  /* Spacing */
+  --app-spacing-xs: 4px;
+  --app-spacing-sm: 8px;
+  --app-spacing-md: 16px;
+  --app-spacing-lg: 24px;
+  --app-spacing-xl: 32px;
+  
+  /* Border Radius */
+  --app-radius-sm: 2px;
+  --app-radius-md: 4px;
+  --app-radius-lg: 8px;
+  
+  /* Transitions */
+  --app-transition-fast: 0.2s;
+  --app-transition-normal: 0.3s;
+  --app-transition-slow: 0.5s;
+}
+
+/* Global Reset & Base Styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--app-text-primary);
+  background-color: var(--app-bg-secondary);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  color: var(--app-text-primary);
+  font-weight: 500;
+}
+
+h1 { font-size: 28px; line-height: 36px; }
+h2 { font-size: 24px; line-height: 32px; }
+h3 { font-size: 20px; line-height: 28px; }
+h4 { font-size: 18px; line-height: 24px; }
+h5 { font-size: 16px; line-height: 22px; }
+h6 { font-size: 14px; line-height: 20px; }
+
+p {
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--app-primary);
+  text-decoration: none;
+  transition: color var(--app-transition-fast);
+}
+
+a:hover {
+  color: var(--app-primary-light);
+}
+
+/* Common Layout Elements */
+.page-container {
+  padding: var(--app-spacing-md);
+}
+
+.card {
+  background-color: var(--app-bg-card);
+  border-radius: 4px;
+  box-shadow: var(--app-shadow-1);
+  padding: var(--app-spacing-md);
+  margin-bottom: var(--app-spacing-md);
+  transition: box-shadow 0.3s;
+}
+
+.card:hover {
+  box-shadow: var(--app-shadow-2);
+}
+
+.section {
+  margin-bottom: var(--app-spacing-lg);
+}
+
+.section-title {
+  margin-bottom: var(--app-spacing-md);
+  font-weight: 500;
+  color: var(--app-text-primary);
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.text-primary { color: var(--app-primary); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-danger { color: var(--color-danger); }
+.text-info { color: var(--color-info); }
+
+.bg-primary { background-color: var(--app-primary); }
+.bg-success { background-color: var(--color-success); }
+.bg-warning { background-color: var(--color-warning); }
+.bg-danger { background-color: var(--color-danger); }
+.bg-info { background-color: var(--color-info); }
+
+.flex { display: flex; }
+.flex-column { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+.align-center { align-items: center; }
+.align-start { align-items: flex-start; }
+.align-end { align-items: flex-end; }
+
+.m-0 { margin: 0; }
+.mt-1 { margin-top: var(--app-spacing-xs); }
+.mt-2 { margin-top: var(--app-spacing-sm); }
+.mt-3 { margin-top: var(--app-spacing-md); }
+.mt-4 { margin-top: var(--app-spacing-lg); }
+.mb-1 { margin-bottom: var(--app-spacing-xs); }
+.mb-2 { margin-bottom: var(--app-spacing-sm); }
+.mb-3 { margin-bottom: var(--app-spacing-md); }
+.mb-4 { margin-bottom: var(--app-spacing-lg); }
+
+.p-0 { padding: 0; }
+.p-1 { padding: var(--app-spacing-xs); }
+.p-2 { padding: var(--app-spacing-sm); }
+.p-3 { padding: var(--app-spacing-md); }
+.p-4 { padding: var(--app-spacing-lg); }
+
+/* Animations */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--app-transition-normal);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--app-bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-3);
+}
+
+/* Arco Design Overrides */
+.arco-btn {
+  font-weight: 500;
+  transition: all 0.3s;
+  border-radius: 4px;
+}
+
+.arco-btn-primary {
+  background-color: var(--app-primary);
+  border-color: var(--app-primary);
+}
+
+.arco-btn-primary:hover {
+  background-color: var(--app-primary-light);
+  border-color: var(--app-primary-light);
+  box-shadow: var(--app-shadow-1);
+}
+
+.arco-btn-secondary {
+  background-color: var(--app-secondary);
+  border-color: var(--app-secondary);
+  color: white;
+}
+
+.arco-btn-secondary:hover {
+  background-color: var(--app-secondary-light);
+  border-color: var(--app-secondary-light);
+}
+
+.arco-btn-success {
+  background-color: var(--md-green);
+  border-color: var(--md-green);
+}
+
+.arco-btn-success:hover {
+  background-color: var(--md-light-green);
+  border-color: var(--md-light-green);
+}
+
+.arco-btn-warning {
+  background-color: var(--md-orange);
+  border-color: var(--md-orange);
+}
+
+.arco-btn-warning:hover {
+  background-color: var(--md-amber);
+  border-color: var(--md-amber);
+}
+
+.arco-btn-danger {
+  background-color: var(--md-red);
+  border-color: var(--md-red);
+}
+
+.arco-btn-danger:hover {
+  background-color: var(--md-deep-orange);
+  border-color: var(--md-deep-orange);
+}
+
+.arco-table-th {
+  font-weight: 500;
+  background-color: var(--app-bg-secondary) !important;
+  color: var(--app-text-primary);
+}
+
+.arco-card-header {
+  font-weight: 500;
+}
+
+.arco-modal-header {
+  font-weight: 500;
+  background-color: var(--app-bg-primary);
+}
+
+.arco-form-item-label {
+  font-weight: 500;
+  color: var(--app-text-secondary);
+}
+
+.arco-tag {
+  border-radius: 16px;
+  font-weight: 500;
+  padding: 0 12px;
+}
+
+.arco-input {
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.arco-input:focus, .arco-input:hover {
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 2px rgba(51, 112, 255, 0.1);
+}
+
+/* Material Design scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--app-bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Material Design animations */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.md-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.md-ripple::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 1s;
+}
+
+.md-ripple:active::after {
+  transform: scale(0, 0);
+  opacity: 0.2;
+  transition: 0s;
+}
+
+/* Material Design elevation classes */
+.md-elevation-1 {
+  box-shadow: var(--app-shadow-1);
+}
+
+.md-elevation-2 {
+  box-shadow: var(--app-shadow-2);
+}
+
+.md-elevation-3 {
+  box-shadow: var(--app-shadow-3);
+}
+
+.md-elevation-4 {
+  box-shadow: var(--app-shadow-4);
+}
+
+.md-elevation-5 {
+  box-shadow: var(--app-shadow-5);
+}
