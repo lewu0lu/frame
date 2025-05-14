@@ -1,13 +1,23 @@
 /* Global CSS Variables */
 :root {
-  /* Primary Colors - Material Design palette */
-  --app-primary: #3370ff;
-  --app-primary-light: #5e96ff;
-  --app-primary-dark: #0052cc;
-  --app-secondary: #673ab7;
-  --app-secondary-light: #9575cd;
-  --app-secondary-dark: #512da8;
-  --app-accent: #00bcd4;
+  /* Primary Colors - Minimalist Blue palette */
+  --app-primary: #2979ff;
+  --app-primary-light: #5393ff;
+  --app-primary-dark: #0d47a1;
+  --app-secondary: #448aff;
+  --app-secondary-light: #76a9ff;
+  --app-secondary-dark: #2962ff;
+  --app-accent: #40c4ff;
+  
+  /* Blue Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--app-primary) 0%, var(--app-primary-light) 100%);
+  --gradient-secondary: linear-gradient(135deg, var(--app-secondary) 0%, var(--app-secondary-light) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--app-accent) 0%, var(--app-primary-light) 100%);
+  --gradient-dark: linear-gradient(135deg, #2c3e50 0%, #1a2a3a 100%);
+  --gradient-blue-soft: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --gradient-blue-tech: linear-gradient(135deg, #396afc 0%, #2948ff 100%);
+  --gradient-blue-royal: linear-gradient(135deg, #0039e6 0%, #4c83ff 100%); 
+  --gradient-blue-navy: linear-gradient(135deg, #172b4d 0%, #304878 100%);
   
   /* Text Colors */
   --app-text-primary: rgba(0, 0, 0, 0.87);
@@ -15,22 +25,32 @@
   --app-text-disabled: rgba(0, 0, 0, 0.38);
   --app-text-on-primary: #ffffff;
   --app-text-on-secondary: #ffffff;
+  --app-text-on-dark: rgba(255, 255, 255, 0.87);
+  --app-text-on-dark-secondary: rgba(255, 255, 255, 0.7);
   
   /* Background Colors */
   --app-bg-primary: #ffffff;
   --app-bg-secondary: #f5f5f5;
   --app-bg-tertiary: #e0e0e0;
   --app-bg-card: #ffffff;
+  --app-bg-tech: #161e2e;
+  --app-bg-tech-light: #232c3d;
+  --app-bg-glass: rgba(255, 255, 255, 0.1);
   
   /* Border Colors */
   --app-border-color: rgba(0, 0, 0, 0.12);
+  --app-border-color-light: rgba(255, 255, 255, 0.1);
+  --app-border-glow: 0 0 8px rgba(51, 112, 255, 0.5);
   
-  /* Shadow - Material Design elevation */
-  --app-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  --app-shadow-2: 0 3px 6px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
-  --app-shadow-3: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
-  --app-shadow-4: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  --app-shadow-5: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+  /* Shadow - Minimalist elevations */
+  --app-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --app-shadow-2: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --app-shadow-3: 0 4px 8px rgba(0, 0, 0, 0.12);
+  --app-shadow-4: 0 8px 16px rgba(0, 0, 0, 0.14);
+  --app-shadow-5: 0 12px 24px rgba(0, 0, 0, 0.16);
+  --app-shadow-primary: 0 4px 12px rgba(41, 121, 255, 0.2);
+  --app-shadow-secondary: 0 4px 12px rgba(68, 138, 255, 0.2);
+  --app-shadow-accent: 0 4px 12px rgba(64, 196, 255, 0.2);
   
   /* Material Design Colors */
   --md-red: #f44336;
@@ -221,25 +241,25 @@ a:hover {
 }
 
 .arco-btn-primary {
-  background-color: var(--app-primary);
-  border-color: var(--app-primary);
+  background: var(--gradient-primary);
+  border: none;
 }
 
 .arco-btn-primary:hover {
-  background-color: var(--app-primary-light);
-  border-color: var(--app-primary-light);
+  background: var(--gradient-blue-soft);
+  border: none;
   box-shadow: var(--app-shadow-1);
 }
 
 .arco-btn-secondary {
-  background-color: var(--app-secondary);
-  border-color: var(--app-secondary);
+  background: var(--gradient-secondary);
+  border: none;
   color: white;
 }
 
 .arco-btn-secondary:hover {
-  background-color: var(--app-secondary-light);
-  border-color: var(--app-secondary-light);
+  background: var(--gradient-blue-tech);
+  border: none;
 }
 
 .arco-btn-success {

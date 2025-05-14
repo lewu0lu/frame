@@ -277,33 +277,124 @@ class ScriptData(CollectionOperator):
 
     def compare_param_check_value(self, param_info, default_input_info):
         """
-        比较参数
+        比较参数并尝试转换类型
         :param param_info: 输入的参数信息
         :param default_input_info: 默认的参数信息
-        :return: 实际要传的参数信息
+        :return: 实际要传的参数信息和转换信息
         """
         params = {}
+        errors = []
+        conversions = []  # 记录参数转换信息
+        
         for info_item in default_input_info:
+            param_name = info_item["name"]
+            expected_type = info_item["type"]
+            
             # 如果给了这个参数
-            if info_item["name"] in param_info:
+            if param_name in param_info:
                 # 也给了值
-                if param_info[info_item["name"]] != None:
-                    if type(param_info[info_item["name"]]).__name__ != info_item["type"] and info_item["type"] != 'Any':
-                        # 值的类型不对报错
-                        raise Exception(
-                            f"变量 {info_item['name']} 的类型错误，期望 {info_item['type']}，实际 {type(param_info[info_item['name']]).__name__}")
-                    params.update({info_item['name']: param_info[info_item["name"]]})
-                elif info_item["default"] == 'null' or info_item["default"] is None:
-                    raise Exception(f"缺少变量 {info_item['name']} ")
+                if param_info[param_name] is not None:
+                    actual_type = type(param_info[param_name]).__name__
+                    
+                    # 类型匹配，直接使用
+                    if actual_type == expected_type or expected_type == 'Any':
+                        params[param_name] = param_info[param_name]
+                    
+                    # 类型不匹配，尝试转换
+                    else:
+                        try:
+                            # 转换为目标类型
+                            converted_value = self._convert_type(param_info[param_name], expected_type)
+                            params[param_name] = converted_value
+                            
+                            # 记录转换信息
+                            conversions.append({
+                                "param_name": param_name,
+                                "from_type": actual_type,
+                                "to_type": expected_type,
+                                "original_value": param_info[param_name],
+                                "converted_value": converted_value
+                            })
+                        except Exception as e:
+                            # 转换失败，记录错误
+                            errors.append(f"参数 {param_name} 转换类型失败：从 {actual_type} 到 {expected_type}，值: {param_info[param_name]}")
+                
+                # 没给值但有默认值
+                elif info_item["default"] != 'null' and info_item["default"] is not None:
+                    if info_item["default"] != 'NotNone':
+                        params[param_name] = info_item["default"]
+                
+                # 没给值且没有默认值
                 else:
-                    if not info_item["default"] == 'NotNone':
-                        params.update({info_item['name']: info_item["default"]})
-            elif info_item["default"] == 'null' or info_item["default"] is None:
-                raise Exception(f"缺少变量 {info_item['name']} ")
+                    errors.append(f"缺少必需参数 {param_name}")
+            
+            # 参数未提供但有默认值
+            elif info_item["default"] != 'null' and info_item["default"] is not None:
+                if info_item["default"] != 'NotNone':
+                    params[param_name] = info_item["default"]
+            
+            # 参数未提供且没有默认值
             else:
-                if not info_item["default"] == 'NotNone':
-                    params.update({info_item['name']: info_item["default"]})
-        return params
+                errors.append(f"缺少必需参数 {param_name}")
+        
+        # 如果有错误，抛出异常
+        if errors:
+            raise Exception("参数校验失败：" + "; ".join(errors))
+            
+        # 返回参数和转换信息
+        return {
+            "params": params,
+            "conversions": conversions
+        }
+
+    def _convert_type(self, value, target_type):
+        """
+        尝试将值转换为目标类型
+        :param value: 要转换的值
+        :param target_type: 目标类型名称
+        :return: 转换后的值
+        """
+        if target_type == 'str':
+            return str(value)
+        elif target_type == 'int':
+            # 尝试从字符串转换为整数
+            if isinstance(value, str):
+                # 移除可能的千位分隔符
+                value = value.replace(',', '')
+            return int(float(value))
+        elif target_type == 'float':
+            # 尝试从字符串转换为浮点数
+            if isinstance(value, str):
+                # 移除可能的千位分隔符
+                value = value.replace(',', '')
+            return float(value)
+        elif target_type == 'bool':
+            # 处理布尔类型转换
+            if isinstance(value, str):
+                return value.lower() in ('true', 'yes', '1', 't', 'y')
+            return bool(value)
+        elif target_type == 'list':
+            # 处理列表类型
+            if isinstance(value, str):
+                # 尝试解析JSON字符串为列表
+                try:
+                    import json
+                    return json.loads(value)
+                except:
+                    # 尝试按逗号分割
+                    return [item.strip() for item in value.split(',')]
+            elif isinstance(value, (int, float, bool)):
+                return [value]
+            return list(value)
+        elif target_type == 'dict':
+            # 处理字典类型
+            if isinstance(value, str):
+                import json
+                return json.loads(value)
+            return dict(value)
+        # 其他类型转换可以根据需要添加
+        else:
+            raise ValueError(f"不支持转换到类型 {target_type}")
 
 
 class ScriptVersion(CollectionOperator):

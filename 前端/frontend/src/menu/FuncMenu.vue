@@ -10,11 +10,33 @@ import {
 } from '@arco-design/web-vue/es/icon';
 import {useRouter} from "vue-router";
 import {Message} from "@arco-design/web-vue";
-import { ref } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 
 const router = useRouter();
-const selectedKeys = ref([]);
-const openKeys = ref(['file', 'interface']);
+// 根据当前路由初始化选中的菜单项
+const currentRoute = router.currentRoute.value.path;
+const initialSelectedKey = getMenuKeyFromRoute(currentRoute);
+const selectedKeys = ref([initialSelectedKey]);
+const openKeys = ref(['interface']);
+
+// 根据路由路径获取对应的菜单key
+function getMenuKeyFromRoute(route) {
+  // 处理根路径
+  if (route === '/') {
+    return 'home';
+  }
+  
+  // 移除开头的斜杠，然后将斜杠替换为连字符
+  return route.replace(/^\//, '').replace(/\//g, '-');
+}
+
+// 监听路由变化，更新选中的菜单项
+watch(() => router.currentRoute.value.path, (newPath) => {
+  const menuKey = getMenuKeyFromRoute(newPath);
+  if (menuKey && !menuKey.includes('login') && !menuKey.includes('register')) {
+    selectedKeys.value = [menuKey];
+  }
+});
 
 function handleMenuClick(key) {
   selectedKeys.value = [key];
@@ -37,16 +59,6 @@ function handleMenuClick(key) {
         show-collapse-button
         accordion
     >
-      <a-sub-menu key="file">
-        <template #icon>
-          <icon-file />
-        </template>
-        <template #title>文件管理</template>
-        <a-menu-item key="file-manage">
-          <template #icon><icon-storage /></template>
-          文件版本管理
-        </a-menu-item>
-      </a-sub-menu>
       <a-sub-menu key="interface">
         <template #icon>
           <icon-code />
@@ -83,26 +95,26 @@ function handleMenuClick(key) {
 }
 
 .menu-header {
-  height: 56px;
+  height: 50px;
   display: flex;
   align-items: center;
   padding: 0 16px;
-  border-bottom: 1px solid var(--app-border-color);
-  background-color: var(--app-bg-primary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(0, 57, 230, 0.8) 0%, rgba(23, 43, 77, 0.9) 100%);
   position: relative;
   z-index: 1;
 }
 
 .menu-header-icon {
-  font-size: 20px;
-  color: var(--app-primary);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
   margin-right: 10px;
 }
 
 .menu-header-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
-  color: var(--app-text-primary);
+  color: rgba(255, 255, 255, 0.9);
   letter-spacing: 0.15px;
 }
 
@@ -121,19 +133,20 @@ function handleMenuClick(key) {
   margin: 4px 8px;
   border-radius: 4px;
   transition: all 0.3s;
-  color: var(--app-text-primary);
+  color: rgba(255, 255, 255, 0.8);
   height: 40px;
   line-height: 40px;
 }
 
 .side-menu :deep(.arco-menu-selected) {
-  background-color: rgba(51, 112, 255, 0.1);
-  color: var(--app-primary);
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
   font-weight: 500;
 }
 
 .side-menu :deep(.arco-menu-item:hover:not(.arco-menu-selected)) {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(255, 255, 255, 0.08);
+  color: white;
 }
 
 .side-menu :deep(.arco-menu-icon) {
@@ -146,7 +159,7 @@ function handleMenuClick(key) {
 }
 
 .side-menu :deep(.arco-menu-inline-header) {
-  color: var(--app-text-primary);
+  color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
   letter-spacing: 0.15px;
   height: 48px;
@@ -154,22 +167,22 @@ function handleMenuClick(key) {
 }
 
 .side-menu :deep(.arco-menu-inline-header:hover) {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .side-menu :deep(.arco-menu-inline-header.arco-menu-selected) {
-  color: var(--app-primary);
+  color: white;
 }
 
 .side-menu :deep(.arco-menu-collapse-button) {
-  color: var(--app-text-secondary);
+  color: rgba(255, 255, 255, 0.7);
   background-color: transparent;
   border-radius: 4px;
 }
 
 .side-menu :deep(.arco-menu-collapse-button:hover) {
-  color: var(--app-text-primary);
-  background-color: rgba(0, 0, 0, 0.04);
+  color: white;
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .side-menu :deep(.arco-icon) {
@@ -177,7 +190,7 @@ function handleMenuClick(key) {
 }
 
 .side-menu :deep(.arco-menu-selected .arco-icon) {
-  color: var(--app-primary);
+  color: white;
 }
 
 /* Material Design ripple effect for menu items */

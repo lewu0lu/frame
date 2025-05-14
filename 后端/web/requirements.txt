@@ -6,3 +6,4 @@ wtforms
 chardet
 tzlocal
 Flask-Cors
+PyJWT==2.8.0

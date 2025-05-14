@@ -118,4 +118,24 @@ collection_configs:
       - [ "request_id", 1 ]
       - [ "task_id", 1 ]
 
-
+  users:
+    validator:
+      $jsonSchema:
+        bsonType: object
+        required: [ user_id, username, password, created_at ]
+        properties:
+          user_id:
+            bsonType: string
+            description: 用户唯一标识，必须是string类型
+          username:
+            bsonType: string
+            description: 用户名，必须是string类型
+          password:
+            bsonType: string
+            description: 密码哈希，必须是string类型
+          created_at:
+            bsonType: date
+            description: 创建时间，必须是date类型
+    index:
+      - [ "user_id", 1 ]
+      - [ "username", 1 ]

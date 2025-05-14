@@ -77,3 +77,37 @@ export const uploadScript = async (data, fileItem) => {
         throw error;
     }
 };
+
+// 验证脚本参数
+export const validateScriptParameters = async (scriptUrl, parameters = {}) => {
+    try {
+        const response = await script_api.post('/validate_parameters', {
+            script_url: scriptUrl,
+            parameters: parameters
+        });
+        
+        return response.data;
+    } catch (error) {
+        console.error('验证脚本参数错误:', error);
+        throw error;
+    }
+};
+
+// 运行脚本
+export const runScript = async (scriptUrl, parameters = {}, forceRun = false) => {
+    try {
+        console.log('运行脚本请求:', `${config.scriptApiBaseUrl}/run_script`, {script_url: scriptUrl, parameters, force_run: forceRun});
+        
+        const response = await script_api.post('/run_script', {
+            script_url: scriptUrl,
+            parameters: parameters,
+            force_run: forceRun
+        });
+        
+        console.log('运行脚本响应:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('运行脚本错误:', error);
+        throw error;
+    }
+};

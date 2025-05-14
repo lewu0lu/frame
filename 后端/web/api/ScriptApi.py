@@ -1,3 +1,5 @@
+import os
+import importlib
 from flask import Blueprint, jsonify, request
 from utils.MongoManager import ScriptData, ScriptVersion
 from utils.base import *
@@ -148,6 +150,144 @@ def cancel_set_version():
         return jsonify({"status": False, "message": str(e)})
 
 
+@script_view.route('/validate_parameters', methods=['POST'])
+def validate_parameters():
+    """验证脚本参数，尝试进行类型转换"""
+    data = request.get_json()
+    script_url = data.get('script_url', None)
+    parameters = data.get('parameters', {})
+    
+    if script_url is None:
+        return jsonify({"status": False, "message": "没有提交脚本url"})
+    
+    try:
+        # 获取脚本信息
+        script_data = ScriptData()
+        script_cache = FileCacheManager()
+        
+        # 检查脚本是否存在
+        if not script_data.find_script_url(script_url):
+            return jsonify({"status": False, "message": "找不到指定脚本"})
+        
+        # 获取本地缓存
+        path = script_cache.find_cache_script(script_url)
+        res = script_data.get_param_info(script_url, path)
+        
+        # 获取脚本参数信息
+        input_info = res["input"]
+        
+        # 验证参数并尝试转换
+        result = script_data.compare_param_check_value(parameters, input_info)
+        
+        # 返回验证和转换结果
+        return jsonify({
+            "status": True, 
+            "message": "参数验证成功", 
+            "params": result["params"],
+            "conversions": result["conversions"]
+        })
+            
+    except Exception as e:
+        return jsonify({"status": False, "message": f"参数校验失败: {str(e)}"})
+
+@script_view.route('/run_script', methods=['POST'])
+def run_script():
+    """运行脚本"""
+    data = request.get_json()
+    script_url = data.get('script_url', None)
+    parameters = data.get('parameters', {})
+    force_run = data.get('force_run', False)  # 是否强制运行（即使有类型转换）
+    
+    if script_url is None:
+        return jsonify({"status": False, "message": "没有提交脚本url"})
+    
+    try:
+        # 获取脚本信息
+        script_data = ScriptData()
+        script_cache = FileCacheManager()
+        
+        # 检查脚本是否存在
+        if not script_data.find_script_url(script_url):
+            return jsonify({"status": False, "message": "找不到指定脚本"})
+        
+        # 获取本地缓存
+        path = script_cache.find_cache_script(script_url)
+        res = script_data.get_param_info(script_url, path)
+        
+        # 如果本地没有缓存，就下载脚本到本地
+        if not path:
+            content = res["script_content"]
+            path = script_cache.add_cache_script(script_url, content)
+        else:
+            path = os.path.join(path, "temp.py")
+        
+        # 获取脚本参数信息和独立执行标志
+        input_info = res["input"]
+        isAlone = res["isAlone"]
+        
+        # 检查脚本是否可以独立执行
+        if not isAlone:
+            return jsonify({"status": False, "message": "该脚本无法单独执行"})
+        
+        # 检查脚本是否有main函数
+        with open(path, "r", encoding='utf-8') as file:
+            has_main = extract_main_function_parameters(file)
+            if not has_main:
+                # 如果没有main函数，可以考虑直接执行脚本（暂不实现）
+                return jsonify({"status": True, "message": "脚本执行成功（无main函数）"})
+        
+        # 验证参数并尝试转换
+        validation_result = script_data.compare_param_check_value(parameters, input_info)
+        params = validation_result["params"]
+        conversions = validation_result["conversions"]
+        
+        # 如果有参数类型转换且不是强制运行，则返回转换信息但不执行
+        if conversions and not force_run:
+            return jsonify({
+                "status": False,
+                "message": "参数需要类型转换，请检查并确认",
+                "conversions": conversions,
+                "require_confirmation": True
+            })
+        
+        # 从缓存加载或导入模块
+        module_cache = CacheManager.get_cache("moduleCache", default_cls=LRUCache, capacity=150)
+        
+        if not module_cache.__contains__(script_url):
+            # 如果缓存中没有模块，则导入
+            module = import_attribute(script_url)
+            module_cache.put(script_url, module)
+        else:
+            module = module_cache.get(script_url)
+        
+        # 执行脚本的main函数
+        try:
+            if hasattr(module, 'main'):
+                result = module.main(**params)
+                return jsonify({
+                    "status": True, 
+                    "message": "脚本执行成功", 
+                    "result": result,
+                    "conversions": conversions  # 返回转换信息
+                })
+            else:
+                return jsonify({"status": False, "message": "脚本中没有main函数"})
+        except Exception as exec_error:
+            return jsonify({
+                "status": False, 
+                "message": f"脚本执行失败: {str(exec_error)}", 
+                "error_type": type(exec_error).__name__
+            })
+            
+    except Exception as e:
+        error_message = str(e)
+        # 检查是否是参数校验相关的错误
+        if '参数校验失败' in error_message or '转换类型失败' in error_message or '类型错误' in error_message:
+            return jsonify({"status": False, "message": f"参数校验错误: {error_message}"})
+        else:
+            return jsonify({"status": False, "message": f"运行脚本时出错: {error_message}"})
+
+
 def update_cache(content, url):
     """
     更新缓存，并reload import缓存
@@ -162,4 +302,3 @@ def update_cache(content, url):
             if moduleCache.__contains__(url):
                 module = moduleCache.get(url)
                 moduleCache.put(url, importlib.reload(module))
-

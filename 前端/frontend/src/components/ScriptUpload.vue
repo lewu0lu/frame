@@ -79,7 +79,7 @@ onMounted(() => {
             placeholder="请输入脚本的URL"
             style="width: 200px;"
         />
-        <a-checkbox v-model="form.is_alone">是否暴露</a-checkbox>
+        <a-checkbox v-model="form.is_alone">是否能单独运行</a-checkbox>
       </a-form-item>
       <a-form-item>
         <a-textarea
